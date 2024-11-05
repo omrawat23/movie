@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
@@ -7,12 +5,14 @@ import { House, Film, Tv, Bookmark, Menu, X, User } from 'lucide-react';
 import SearchBar from '@/components/SearchBar';
 import { Movie } from '../types';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const navigate = useNavigate();
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const handleCardClick = (movieId: number) => {
     Cookies.set('user_accepted_cookies', 'true', { sameSite: 'Strict' });
-    window.location.href = `/videopage/${movieId}`;
+    navigate(`/videopage/${movieId}`);
   };
 
   const toggleMenu = () => {
