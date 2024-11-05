@@ -1,20 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Play, User2, Image as ImageIcon } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+
+interface TvShow {
+  id: number;
+  name: string;
+  first_air_date: string;
+  episode_run_time: number[];
+  overview: string;
+  backdrop_path: string;
+}
+
+interface CastMember {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+}
+
+interface SimilarShow {
+  id: number;
+  name: string;
+  poster_path: string | null;
+}
+
+interface ImageData {
+  backdrops: { file_path: string }[];
+  posters: { file_path: string }[];
+}
 
 const TvVideoPage = () => {
   const { movieId } = useParams<{ movieId: string }>();
   const navigate = useNavigate();
-  const [tvShow, setTvShow] = useState<any>(null);
-  const [cast, setCast] = useState([]);
-  const [similar, setSimilar] = useState([]);
-  const [images, setImages] = useState({ backdrops: [], posters: [] });
+  const [tvShow, setTvShow] = useState<TvShow | null>(null);
+  const [cast, setCast] = useState<CastMember[]>([]);
+  const [similar, setSimilar] = useState<SimilarShow[]>([]);
+  const [images, setImages] = useState<ImageData>({ backdrops: [], posters: [] });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, ] = useState<string | null>(null);
   const [showVideo, setShowVideo] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTvData = async () => {
@@ -43,7 +69,7 @@ const TvVideoPage = () => {
         });
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        console.log(err);
         setLoading(false);
       }
     };
@@ -54,8 +80,7 @@ const TvVideoPage = () => {
     setSelectedImage(null);
   }, [movieId]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSimilarMovieClick = (similarMovieId: any) => {
+  const handleSimilarMovieClick = (similarMovieId: number) => {
     navigate(`/tv-videopage/${similarMovieId}`);
     window.scrollTo(0, 0);
   };
@@ -80,7 +105,7 @@ const TvVideoPage = () => {
     <div className="min-h-screen bg-gray-900">
       {/* Image Modal */}
       {selectedImage && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
@@ -94,7 +119,7 @@ const TvVideoPage = () => {
 
       {/* Hero Section */}
       <div className="relative h-screen">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url(https://image.tmdb.org/t/p/original${tvShow.backdrop_path})`
@@ -131,7 +156,7 @@ const TvVideoPage = () => {
 
               <p className="text-gray-300 max-w-2xl mb-8">{tvShow.overview}</p>
 
-              <button 
+              <button
                 onClick={() => setShowVideo(true)}
                 className="flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full w-fit transition-colors"
               >
@@ -195,8 +220,8 @@ const TvVideoPage = () => {
         <h2 className="text-2xl font-bold text-white mb-6">Similar shows</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {similar.map((show) => (
-            <button 
-              key={show.id} 
+            <button
+              key={show.id}
               onClick={() => handleSimilarMovieClick(show.id)}
               className="space-y-2 text-left group"
             >
