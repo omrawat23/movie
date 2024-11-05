@@ -135,10 +135,11 @@ const VideoPage = () => {
           {showVideo ? (
             <div className="aspect-video w-full max-w-4xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
               <iframe
-                src={`https://vidbinge.dev/embed/movie/${movieId}`}
+                src={`https://vidsrc.cc/v2/embed/movie/${movieId}`}
                 className="w-full h-full"
                 allowFullScreen
                 title="Movie Video"
+                referrerPolicy="origin"
               ></iframe>
             </div>
           ) : (
