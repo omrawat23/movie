@@ -3,18 +3,44 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Play, User2, Image as ImageIcon } from 'lucide-react';
 
+interface Movie {
+  id: number;
+  title: string;
+  release_date: string;
+  runtime: number;
+  overview: string;
+  backdrop_path: string;
+}
+
+interface CastMember {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+}
+
+interface SimilarMovie {
+  id: number;
+  title: string;
+  poster_path: string | null;
+}
+
+interface ImageData {
+  backdrops: { file_path: string }[];
+  posters: { file_path: string }[];
+}
 
 const VideoPage = () => {
   const { movieId } = useParams<{ movieId: string }>();
   const navigate = useNavigate();
-  const [movie, setMovie] = useState(null);
-  const [cast, setCast] = useState([]);
-  const [similar, setSimilar] = useState([]);
-  const [images, setImages] = useState({ backdrops: [], posters: [] });
+  const [movie, setMovie] = useState<Movie | null>(null);
+  const [cast, setCast] = useState<CastMember[]>([]);
+  const [similar, setSimilar] = useState<SimilarMovie[]>([]);
+  const [images, setImages] = useState<ImageData>({ backdrops: [], posters: [] });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, ] = useState<string | null>(null);
   const [showVideo, setShowVideo] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -43,7 +69,7 @@ const VideoPage = () => {
         });
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        console.log(err);
         setLoading(false);
       }
     };
@@ -54,8 +80,7 @@ const VideoPage = () => {
     setSelectedImage(null);
   }, [movieId]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSimilarMovieClick = (similarMovieId: any) => {
+  const handleSimilarMovieClick = (similarMovieId: number) => {
     navigate(`/videopage/${similarMovieId}`);
     window.scrollTo(0, 0);
   };
@@ -80,7 +105,7 @@ const VideoPage = () => {
     <div className="min-h-screen bg-gray-900">
       {/* Image Modal */}
       {selectedImage && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
@@ -94,7 +119,7 @@ const VideoPage = () => {
 
       {/* Hero Section */}
       <div className="relative h-screen">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`
@@ -131,7 +156,7 @@ const VideoPage = () => {
 
               <p className="text-gray-300 max-w-2xl mb-8">{movie.overview}</p>
 
-              <button 
+              <button
                 onClick={() => setShowVideo(true)}
                 className="flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full w-fit transition-colors"
               >
@@ -195,8 +220,8 @@ const VideoPage = () => {
         <h2 className="text-2xl font-bold text-white mb-6">Similar movies</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {similar.map((movie) => (
-            <button 
-              key={movie.id} 
+            <button
+              key={movie.id}
               onClick={() => handleSimilarMovieClick(movie.id)}
               className="space-y-2 text-left group"
             >
