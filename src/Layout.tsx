@@ -67,9 +67,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   );
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-[#13141A] to-[#1a1c25] text-white">
+    <div className="flex h-screen bg-gradient-to-br from-[#13141A] to-[#1a1c25] text-white overflow-hidden">
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 bg-[#1C1E26]/90 backdrop-blur-lg border-r border-gray-800/50 p-6">
+      <div className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 p-6">
         <h2 className="text-3xl font-bold text-white mb-10 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
           Jess TV
         </h2>
@@ -97,12 +97,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Menu className="w-6 h-6 text-white" />
           </button>
           
-          {/* Search bar container with flex-grow */}
           <div className="flex-grow">
             <SearchBar onSearchResults={handleSearchResults} />
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-2">
             <Button 
               variant="ghost" 
@@ -172,7 +170,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Main Content Area */}
       <div className="flex flex-col flex-1 md:ml-64">
         {/* Desktop Header */}
-        <header className="hidden md:flex items-center justify-between backdrop-blur-lg p-4">
+        <header className="hidden md:flex items-center justify-between backdrop-blur-lg p-4 md:p-0 md:m-4">
           <SearchBar onSearchResults={handleSearchResults} />
           <div className="flex items-center space-x-6">
             <Button variant="ghost" size="icon" className="hover:bg-blue-500/10 hover:text-blue-400 transition-colors">
@@ -224,7 +222,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       )}
 
         {/* Main Content */}
-        <main className="flex-1 md:p-2 overflow-y-auto mt-20 md:mt-[-16px]">
+        <main className="flex-1 md:p-2 overflow-y-auto scrollbar-hide mt-20 md:mt-[-16px]">
           {children}
         </main>
       </div>

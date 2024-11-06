@@ -80,20 +80,21 @@ const VideoPage = () => {
     setSelectedImage(null);
   }, [movieId]);
 
+
   const handleSimilarMovieClick = (similarMovieId: number) => {
     navigate(`/videopage/${similarMovieId}`);
-    window.scrollTo(0, 0);
+window.scrollTo(0, 0);
   };
 
   if (loading) return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-500"></div>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-[#13141A] to-[#1a1c25]">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#3d59ad]"></div>
     </div>
   );
 
   if (error) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-red-900 text-red-100 p-4 rounded-lg">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#13141A] to-[#1a1c25]">
+      <div className="bg-red-900/20 text-red-100 p-4 rounded-lg">
         Error: {error}
       </div>
     </div>
@@ -102,7 +103,7 @@ const VideoPage = () => {
   if (!movie) return null;
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-[#13141A] to-[#1a1c25]">
       {/* Image Modal */}
       {selectedImage && (
         <div
@@ -125,8 +126,8 @@ const VideoPage = () => {
             backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/70 to-transparent">
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#13141A] via-[#13141A]/70 to-transparent">
+            <div className="absolute inset-0 bg-gradient-to-t from-[#13141A] via-[#13141A]/30 to-transparent" />
           </div>
         </div>
 
@@ -149,12 +150,12 @@ const VideoPage = () => {
             <>
               <h1 className="text-6xl font-bold text-white mb-4">{movie.title}</h1>
               <div className="flex items-center gap-4 mb-8">
-                <span className="text-pink-500 font-medium">{movie.release_date.split('-')[0]}</span>
+                <span className="text-[#3d59ad] font-medium">{movie.release_date.split('-')[0]}</span>
                 <span className="text-gray-400">•</span>
                 <span className="text-gray-400">{movie.runtime} min</span>
                 <span className="text-gray-400">•</span>
                 <div className="flex items-center gap-2">
-                  <span className="bg-pink-500 text-white px-2 py-0.5 rounded text-sm">HD</span>
+                  <span className="bg-gradient-to-r from-[#3d59ad] to-[#4c6ac2] text-white px-2 py-0.5 rounded text-sm">HD</span>
                 </div>
               </div>
 
@@ -162,7 +163,7 @@ const VideoPage = () => {
 
               <button
                 onClick={() => setShowVideo(true)}
-                className="flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full w-fit transition-colors"
+                className="flex items-center gap-2 bg-gradient-to-r from-[#3d59ad] to-[#4c6ac2] hover:from-[#4c6ac2] hover:to-[#5a78d0] text-white px-8 py-3 rounded-full w-fit transition-all duration-300"
               >
                 <Play className="h-5 w-5" />
                 <span>Watch Now</span>
@@ -185,7 +186,7 @@ const VideoPage = () => {
                   className="w-full h-40 object-cover rounded-lg"
                 />
               ) : (
-                <div className="w-full h-40 bg-gray-800 rounded-lg flex items-center justify-center">
+                <div className="w-full h-40 bg-[#13141A] rounded-lg flex items-center justify-center">
                   <User2 className="h-8 w-8 text-gray-600" />
                 </div>
               )}
@@ -204,7 +205,7 @@ const VideoPage = () => {
             <button
               key={index}
               onClick={() => setSelectedImage(image.file_path)}
-              className="relative group aspect-video bg-gray-800 rounded-lg overflow-hidden"
+              className="relative group aspect-video bg-[#13141A] rounded-lg overflow-hidden"
             >
               <img
                 src={`https://image.tmdb.org/t/p/w780${image.file_path}`}
