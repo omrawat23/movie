@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { House, Film, Tv, Bookmark, Menu, X, User, Bell } from 'lucide-react';
+import { House, Film, Tv, Bookmark, Menu, X, User, Bell, Search } from 'lucide-react';
 import SearchBar from '@/components/SearchBar';
 import { Movie } from '../types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -14,10 +14,12 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchActive, setIsSearchActive] = useState(false);
   const searchResultsRef = useRef<HTMLDivElement>(null);
 
   const handleSearchResults = (movies: Movie[]) => {
     setSearchResults(movies);
+    setIsSearchActive(true);
   };
 
   const handleCardClick = (movieId: number) => {
@@ -28,10 +30,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const toggleSearch = () => {
+    setIsSearchActive(!isSearchActive);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchResultsRef.current && !searchResultsRef.current.contains(event.target as Node)) {
         setSearchResults([]);
+        setIsSearchActive(false);
       }
     };
 
@@ -70,8 +77,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="flex h-screen bg-gradient-to-br from-[#13141A] to-[#1a1c25] text-white overflow-hidden">
       {/* Desktop Sidebar */}
       <div className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 p-6">
-      <h2 className="sparkly-text mb-10">Jess TV</h2>
-
+        <h2 className="sparkly-text mb-10">Jess TV</h2>
 
         <div className="flex flex-col space-y-2">
           <NavigationLinks />
@@ -97,23 +103,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Menu className="w-6 h-6 text-white" />
           </button>
           
-          <div className="flex-grow">
-            <SearchBar onSearchResults={handleSearchResults} />
-          </div>
+          <h2 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent flex-grow">
+            Jess TV
+          </h2>
 
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="hover:bg-blue-500/10 hover:text-blue-400 transition-colors"
-            >
-              <Bell className="h-5 w-5" />
-            </Button>
-            <Avatar className="w-8 h-8 ring-2 ring-blue-500/20">
-              <AvatarImage src="/jesss.png" alt="Jess" />
-              <AvatarFallback className="bg-blue-500/10 text-blue-400">JT</AvatarFallback>
-            </Avatar>
-          </div>
+          <button
+            onClick={toggleSearch}
+            className="p-2 hover:bg-blue-500/10 rounded-xl transition-colors active:scale-95"
+            aria-label="Toggle search"
+          >
+            <Search className="w-6 h-6 text-white" />
+          </button>
+
+          <Avatar className="w-8 h-8 ring-2 ring-blue-500/20">
+            <AvatarImage src="/jesss.png" alt="Jess" />
+            <AvatarFallback className="bg-blue-500/10 text-blue-400">JT</AvatarFallback>
+          </Avatar>
         </div>
       </header>
 
@@ -171,7 +176,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="flex flex-col flex-1 md:ml-64">
         {/* Desktop Header */}
         <header className="hidden md:flex items-center justify-between backdrop-blur-lg p-4 md:p-0 md:m-4">
-          <SearchBar onSearchResults={handleSearchResults} />
+          <div onClick={toggleSearch} className="cursor-pointer">
+            <SearchBar onSearchResults={handleSearchResults} />
+          </div>
           <div className="flex items-center space-x-6">
             <Button variant="ghost" size="icon" className="hover:bg-blue-500/10 hover:text-blue-400 transition-colors">
               <Bell className="h-5 w-5" />
@@ -187,39 +194,45 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         </header>
 
-        {/* Search Results */}
-        {searchResults.length > 0 && (
-        <div 
-          ref={searchResultsRef} 
-          className="absolute top-[72px] md:top-[58px] left-4 right-4 md:left-auto md:right-auto z-50 bg-[#1C1E26]/95 backdrop-blur-xl border border-gray-800/50 rounded-xl shadow-lg shadow-black/20"
-        >
-          <ScrollArea className="h-[calc(100vh-8rem)] w-full max-w-[400px] md:max-w-[300px]">
-            <div className="p-2 space-y-1">
-              {searchResults.map((movie) => (
-                <button
-                  key={movie.id}
-                  className="w-full flex items-center gap-4 p-3 hover:bg-blue-500/10 transition-colors rounded-xl group"
-                  onClick={() => handleCardClick(movie.id)}
-                >
-                  <img
-                    src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
-                    alt={movie.title}
-                    className="w-12 h-[72px] object-cover rounded-lg shadow-md"
-                  />
-                  <div className="flex flex-col items-start text-left">
-                    <span className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">
-                      {movie.title}
-                    </span>
-                    <span className="text-xs text-gray-400">
-                      {new Date(movie.release_date).getFullYear()}
-                    </span>
-                  </div>
-                </button>
-              ))}
+        {/* Centered Search Bar and Results */}
+        {isSearchActive && (
+          <div 
+            ref={searchResultsRef}
+            className="fixed inset-0 z-50 flex items-start md:items-center justify-center px-4 md:px-0 pt-16 md:pt-0"
+          >
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsSearchActive(false)} />
+            <div className="relative bg-[#1C1E26]/95 backdrop-blur-xl border border-gray-800/50 rounded-xl shadow-lg shadow-black/20 w-full max-w-[500px] mx-auto">
+              <div className="p-4">
+                <SearchBar onSearchResults={handleSearchResults} />
+              </div>
+              <ScrollArea className="h-[calc(100vh-40vh)] md:h-[calc(100vh-40vh)]">
+                <div className="p-2 space-y-1">
+                  {searchResults.map((movie) => (
+                    <button
+                      key={movie.id}
+                      className="w-full flex items-center gap-4 p-3 hover:bg-blue-500/10 transition-colors rounded-xl group"
+                      onClick={() => handleCardClick(movie.id)}
+                    >
+                      <img
+                        src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
+                        alt={movie.title}
+                        className="w-12 h-[72px] object-cover rounded-lg shadow-md"
+                      />
+                      <div className="flex flex-col items-start text-left">
+                        <span className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">
+                          {movie.title}
+                        </span>
+                        <span className="text-xs text-gray-400">
+                          {new Date(movie.release_date).getFullYear()}
+                        </span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </ScrollArea>
             </div>
-          </ScrollArea>
-        </div>
-      )}
+          </div>
+        )}
 
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto scrollbar-hide mt-20 md:mt-[-16px]">

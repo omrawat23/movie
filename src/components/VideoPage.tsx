@@ -137,6 +137,7 @@ window.scrollTo(0, 0);
             <div className="aspect-video w-full max-w-4xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
               <iframe
                 src={`https://vidsrc.cc/v2/embed/movie/${movieId}`}
+                // src={`https://vidbinge.dev/embed/movie/${movieId}`}
                 className="aspect-video w-full h-auto rounded-lg"
                 width="1280"
                 height="720"

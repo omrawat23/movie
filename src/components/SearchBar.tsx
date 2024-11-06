@@ -31,7 +31,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchResults }) => {
           headers: {
             accept: 'application/json',
             Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZDg2MjI4NzlhZmUxOGY5OTc2NDJmOWYzNzc3N2FjMiIsIm5iZiI6MTczMDY3MjA3MS4zNjUwMzcsInN1YiI6IjY3MjdmNDA0NTU1ZTNlZmM4OWMzMmY5NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7ST0b4zGR7UynUdSV5ANEKDjpzrxh9nitsPrz8cqx6w'
-        }
+          }
         }
       );
       onSearchResults(response.data.results);
@@ -43,7 +43,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchResults }) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
-    debounce((query: string) => searchMovies(query), 500),
+    debounce((query: string) => searchMovies(query), 250),
     []
   );
 
@@ -54,17 +54,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchResults }) => {
   };
 
   return (
-    <div className="relative w-64 ml-3">
-      <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+    <div className="relative w-full">
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
       <Input
         type="text"
         placeholder="Search movies..."
         value={searchTerm}
         onChange={handleSearchChange}
-        className="w-full bg-gray-700/50 border-gray-600 focus:border-blue-500 text-white placeholder-gray-400"
+        className="w-full bg-gray-700/50 border-gray-600 focus:border-blue-500 text-white placeholder-gray-400 pl-10"
       />
     </div>
-    
   );
 };
 
