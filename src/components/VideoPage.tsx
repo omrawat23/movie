@@ -135,7 +135,7 @@ window.scrollTo(0, 0);
         <div className="relative h-full max-w-7xl mx-auto px-6 py-12 flex flex-col justify-center">
           {showVideo ? (
             <div  onClick={(e) => e.stopPropagation()} className="aspect-video w-full max-w-4xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
-             {/* <iframe
+             <iframe
   src={showVideo ? `https://vidsrc.cc/v2/embed/movie/${movieId}` : "about:blank"}
   className="aspect-video w-full h-auto rounded-lg relative"
   width="1280"
@@ -145,9 +145,9 @@ window.scrollTo(0, 0);
   allowFullScreen
   allowTransparency
   sandbox="allow-same-origin allow-scripts" // Limits the iframe's capabilities
-></iframe> */}
-<iframe
-  src={showVideo ? `https://embed.su/embed/movie/${movieId}` : "about:blank"}
+></iframe>
+{/* <iframe
+   src={showVideo ? `http://localhost:5000/proxy/video/${movieId}` : "about:blank"}
   className="aspect-video w-full h-auto rounded-lg relative"
   width="1280"
   height="720"
@@ -155,8 +155,9 @@ window.scrollTo(0, 0);
   frameBorder="0"
   allowFullScreen
   allowTransparency
-  
-></iframe>
+  allow="autoplay"
+></iframe> */}
+
 
             </div>
           ) : (

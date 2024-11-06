@@ -23,7 +23,7 @@ const AppRouter = () => {
           <Route path="/videopage/:movieId" element={<VideoPage />} />
           <Route path="/tv-videopage/:movieId" element={<TvVideoPage />} />
           
-          <Route path="/porn" element={<VideoPage1 />} />
+          {/* <Route path="/porn" element={<VideoPage1 />} /> */}
         </Routes>
       </Layout>
     </Router>
