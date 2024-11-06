@@ -7,6 +7,10 @@ import { Search } from 'lucide-react';
 
 interface SearchBarProps {
   onSearchResults: (movies: Movie[]) => void;
+  onSearchChange: (value: string) => void;
+  inputRef: React.RefObject<HTMLInputElement>
+  initialValue: string
+  
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearchResults }) => {
@@ -60,6 +64,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchResults }) => {
         type="text"
         placeholder="Search movies..."
         value={searchTerm}
+        autoFocus
         onChange={handleSearchChange}
         className="w-full bg-gray-700/50 border-gray-600 focus:border-blue-500 text-white placeholder-gray-400 pl-10"
       />

@@ -6,6 +6,7 @@ import { Movie } from '../types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from './components/ui/button';
+import { Input } from './components/ui/input';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,11 +16,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const searchResultsRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchResults = (movies: Movie[]) => {
     setSearchResults(movies);
     setIsSearchActive(true);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
   };
 
   const handleCardClick = (movieId: number) => {
@@ -31,7 +38,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   const toggleSearch = () => {
-    setIsSearchActive(!isSearchActive);
+    
+    setIsSearchActive(true);
   };
 
   useEffect(() => {
@@ -47,6 +55,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    if (isSearchActive && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchActive]);
 
   const NavigationLinks = () => (
     <>
@@ -176,9 +190,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="flex flex-col flex-1 md:ml-64">
         {/* Desktop Header */}
         <header className="hidden md:flex items-center justify-between backdrop-blur-lg p-4 md:p-0 md:m-4">
-          <div onClick={toggleSearch} className="cursor-pointer">
-            <SearchBar onSearchResults={handleSearchResults} />
-          </div>
+        <div className="relative w-64" onClick={toggleSearch}>
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Input
+            type="text"
+            placeholder="Search movies..."
+            
+            readOnly
+            className="w-full bg-gray-700/50 border-gray-600 focus:border-blue-500 text-white placeholder-gray-400 pl-10"
+          />
+      </div>
+
           <div className="flex items-center space-x-6">
             <Button variant="ghost" size="icon" className="hover:bg-blue-500/10 hover:text-blue-400 transition-colors">
               <Bell className="h-5 w-5" />
@@ -203,7 +225,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsSearchActive(false)} />
             <div className="relative bg-[#1C1E26]/95 backdrop-blur-xl border border-gray-800/50 rounded-xl shadow-lg shadow-black/20 w-full max-w-[500px] mx-auto">
               <div className="p-4">
-                <SearchBar onSearchResults={handleSearchResults} />
+                <SearchBar 
+                  onSearchResults={handleSearchResults} 
+                  onSearchChange={handleSearchChange}
+                  inputRef={searchInputRef}
+                  initialValue={searchTerm}
+                />
               </div>
               <ScrollArea className="h-[calc(100vh-40vh)] md:h-[calc(100vh-40vh)]">
                 <div className="p-2 space-y-1">
