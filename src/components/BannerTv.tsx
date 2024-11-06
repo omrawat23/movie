@@ -77,7 +77,7 @@ export default function BannerTv() {
 
   if (loading || movies.length === 0) {
     return (
-      <div className="w-full h-[300px] sm:h-[300px] md:h-[400px] lg:h-[500px] bg-gradient-to-br from-purple-900/10 to-pink-600/5 animate-pulse rounded-2xl sm:rounded-3xl">
+      <div className="w-full h-[300px] sm:h-[300px] md:h-[400px] lg:h-[450px] bg-gradient-to-br from-purple-900/10 to-pink-600/5 animate-pulse rounded-2xl sm:rounded-3xl">
         <div className="h-full w-full bg-muted/20 backdrop-blur-xl rounded-2xl sm:rounded-3xl" />
       </div>
     )

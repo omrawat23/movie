@@ -69,17 +69,17 @@ const TvSeriesPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full px-4 py-4 bg-black">
+    <div className="w-full px-4 py-4">
       <BannerTv />
-      <div className="max-w-8xl mt-6 mx-auto">
-        <h1 className="text-3xl font-bold mb-8 ml-2 text-white">Popular Movies</h1>
+      <div className="max-w-8xl mt-4 mx-auto">
+        <h1 className="text-3xl font-bold mb-4 ml-2 text-white">Popular Tv Series</h1>
         <div className="relative">
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex gap-4 md:gap-5 lg:gap-6 pl-4">
               {movies.map((movie) => (
                 <div
                   key={movie.id}
-                  className="flex-[0_0_80%] min-w-0 sm:flex-[0_0_40%] md:flex-[0_0_40%] lg:flex-[0_0_22%]"
+  className="flex-[0_0_80%] min-w-0 sm:flex-[0_0_40%] md:flex-[0_0_40%] lg:flex-[0_0_25%] xl:flex-[0_0_18%]"
                 >
                   <Card
                     className="overflow-hidden cursor-pointer group relative bg-transparent border-0"
@@ -91,7 +91,7 @@ const TvSeriesPage: React.FC = () => {
                         <img
                           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                           alt={movie.name}
-                          className="w-full h-[350px] object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="w-full h-[250px] sm:h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
                           <h2 className="font-semibold text-lg md:text-xl text-white mb-1 drop-shadow-lg line-clamp-1">
