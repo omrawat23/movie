@@ -54,14 +54,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchResults }) => {
   };
 
   return (
-    <div className="relative w-64">
-      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+    <div className="relative w-64 ml-3">
+      <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
       <Input
         type="text"
         placeholder="Search movies..."
         value={searchTerm}
         onChange={handleSearchChange}
-        className="w-full pl-10 border-none text-black placeholder-gray-500 h-12 rounded-xl"
+        className="w-full bg-gray-700/50 border-gray-600 focus:border-blue-500 text-white placeholder-gray-400"
       />
     </div>
     

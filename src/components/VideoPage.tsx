@@ -136,10 +136,13 @@ const VideoPage = () => {
             <div className="aspect-video w-full max-w-4xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
               <iframe
                 src={`https://vidsrc.cc/v2/embed/movie/${movieId}`}
-                className="w-full h-full"
+                className="aspect-video w-full h-auto rounded-lg"
+                width="1280"
+                height="720"
+                title="Video player"
+                frameBorder="0"
                 allowFullScreen
-                title="Movie Video"
-                referrerPolicy="origin"
+                allowTransparency
               ></iframe>
             </div>
           ) : (
