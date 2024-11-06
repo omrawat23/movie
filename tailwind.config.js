@@ -9,6 +9,7 @@ module.exports = {
   	extend: {
 		screens:{
         "xs": "480px",
+		"xl": "1480px"
 		},
   		borderRadius: {
   			lg: 'var(--radius)',

@@ -70,9 +70,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="flex h-screen bg-gradient-to-br from-[#13141A] to-[#1a1c25] text-white overflow-hidden">
       {/* Desktop Sidebar */}
       <div className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 p-6">
-        <h2 className="text-3xl font-bold text-white mb-10 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-          Jess TV
-        </h2>
+      <h2 className="sparkly-text mb-10">Jess TV</h2>
+
+
         <div className="flex flex-col space-y-2">
           <NavigationLinks />
         </div>
