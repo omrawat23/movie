@@ -73,8 +73,8 @@ export default function MoviesPage() {
   return (
     <div className="w-full px-4 py-4">
       <Banner />
-      <div className="max-w-8xl mt-6 mx-auto">
-        <h2 className="text-3xl font-bold mb-6 ml-2 text-white">Popular Movies</h2>
+      <div className="max-w-8xl mt-4 mx-auto">
+        <h2 className="text-3xl font-bold mb-4 ml-2 text-white">Popular Movies</h2>
         <div className="relative">
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex gap-4 md:gap-5 lg:gap-6 pl-4">

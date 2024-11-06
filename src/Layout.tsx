@@ -222,7 +222,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       )}
 
         {/* Main Content */}
-        <main className="flex-1 md:p-2 overflow-y-auto scrollbar-hide mt-20 md:mt-[-16px]">
+        <main className="flex-1 overflow-y-auto scrollbar-hide mt-20 md:mt-[-16px]">
           {children}
         </main>
       </div>
