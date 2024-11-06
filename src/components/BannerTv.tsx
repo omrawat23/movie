@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState,useCallback } from 'react'
 import { Button } from "@/components/ui/button"
 import { Play } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 import axios from 'axios'
 
 interface Movie {
@@ -17,6 +18,7 @@ export default function BannerTv() {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [showContent, setShowContent] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -44,6 +46,13 @@ export default function BannerTv() {
   
     fetchMovies();
   }, []);
+
+  const handleMovieClick = useCallback(
+    (movieId: number) => {
+      navigate(`/videopage/${movieId}`)
+    },
+    [navigate]
+  )
 
   useEffect(() => {
     if (movies.length > 0 && !isPaused) {
@@ -104,6 +113,7 @@ export default function BannerTv() {
             {currentMovie.overview}
           </p>
           <Button
+          onClick={() => handleMovieClick(currentMovie.id)}
             size="sm"
             className="h-8 sm:h-10 md:h-12 lg:h-14 px-4 sm:px-6 md:px-8 rounded-full bg-white hover:bg-white/90 text-black font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-300 ease-in-out transform hover:scale-105"
           >

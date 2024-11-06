@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Button } from "@/components/ui/button"
 import { Play } from "lucide-react"
 import axios from 'axios'
+import { useNavigate } from "react-router-dom"
 
 interface Movie {
   backdrop_path: string
@@ -18,6 +19,7 @@ export default function Component() {
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0)
   const [imageLoaded, setImageLoaded] = useState(false)
   const [showContent, setShowContent] = useState(false)
+  const navigate = useNavigate()
   const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
@@ -46,6 +48,13 @@ export default function Component() {
   
     fetchMovies();
   }, []);
+
+  const handleMovieClick = useCallback(
+    (movieId: number) => {
+      navigate(`/videopage/${movieId}`)
+    },
+    [navigate]
+  )
   
 
   useEffect(() => {
@@ -107,6 +116,7 @@ export default function Component() {
             {currentMovie.overview}
           </p>
           <Button
+          onClick={() => handleMovieClick(currentMovie.id)}
             size="sm"
             className="h-8 sm:h-10 md:h-12 lg:h-14 px-4 sm:px-6 md:px-8 rounded-full bg-white hover:bg-white/90 text-black font-semibold text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-300 ease-in-out transform hover:scale-105"
           >
