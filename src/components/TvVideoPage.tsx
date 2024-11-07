@@ -164,7 +164,7 @@ export default function Component() {
         </div>
       )}
 
-      <div className="relative h-screen">
+      <div className="relative min-h-screen md:h-screen">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -176,23 +176,23 @@ export default function Component() {
           </div>
         </div>
 
-        <div className="relative h-full max-w-7xl mx-auto px-6 py-12 flex flex-col justify-center">
-          <h1 className="text-6xl font-bold text-white mb-4">{tvShow.name}</h1>
-          <div className="flex items-center gap-4 mb-8">
+        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 py-12 flex flex-col justify-center">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">{tvShow.name}</h1>
+          <div className="flex flex-wrap items-center gap-4 mb-8">
             <span className="text-pink-500 font-medium">{tvShow.first_air_date.split('-')[0]}</span>
-            <span className="text-gray-400">•</span>
+            <span className="text-gray-400 hidden sm:inline">•</span>
             <span className="text-gray-400">{tvShow.episode_run_time[0]} min</span>
-            <span className="text-gray-400">•</span>
+            <span className="text-gray-400 hidden sm:inline">•</span>
             <div className="flex items-center gap-2">
               <span className="bg-pink-500 text-white px-2 py-0.5 rounded text-sm">HD</span>
             </div>
           </div>
 
-          <p className="text-gray-300 max-w-2xl mb-8">{tvShow.overview}</p>
+          <p className="text-gray-300 max-w-2xl mb-8 text-sm sm:text-base">{tvShow.overview}</p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <Select onValueChange={(value) => { setSelectedSeason(Number(value)); handleEpisodeChange(); }}>
-              <SelectTrigger className="w-[180px] bg-black">
+              <SelectTrigger className="w-full sm:w-[180px] bg-black">
                 <SelectValue placeholder="Season 1" />
               </SelectTrigger>
               <SelectContent>
@@ -205,7 +205,7 @@ export default function Component() {
             </Select>
 
             <Select onValueChange={(value) => { setSelectedEpisode(Number(value)); handleEpisodeChange(); }}>
-              <SelectTrigger className="w-[180px] bg-black">
+              <SelectTrigger className="w-full sm:w-[180px] bg-black">
                 <SelectValue placeholder="Episode 1" />
               </SelectTrigger>
               <SelectContent>
@@ -244,9 +244,9 @@ export default function Component() {
       </div>
 
       {/* Cast Section */}
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <h2 className="text-2xl font-bold text-white mb-6">Cast</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <h2 className="text-xl sm:text-2xl font-bold text-white mb-6">Cast</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
           {cast.map((actor) => (
             <div key={actor.id} className="space-y-2">
               {actor.profile_path ? (
@@ -261,16 +261,16 @@ export default function Component() {
                 </div>
               )}
               <p className="text-white text-sm font-medium">{actor.name}</p>
-              <p className="text-gray-400 text-sm">{actor.character}</p>
+              <p className="text-gray-400 text-xs sm:text-sm">{actor.character}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Gallery Section */}
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <h2 className="text-2xl font-bold text-white mb-6">Gallery</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <h2 className="text-xl sm:text-2xl font-bold text-white mb-6">Gallery</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {images.backdrops.map((image, index) => (
             <button
               key={index}
@@ -291,9 +291,9 @@ export default function Component() {
       </div>
 
       {/* Similar Shows */}
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <h2 className="text-2xl font-bold text-white mb-6">Similar shows</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <h2 className="text-xl sm:text-2xl font-bold text-white mb-6">Similar shows</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {similar.map((show) => (
             <button
               key={show.id}
@@ -304,7 +304,7 @@ export default function Component() {
                 <img
                   src={`https://image.tmdb.org/t/p/w342${show.poster_path}`}
                   alt={show.name}
-                  className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-48 sm:h-64 object-cover transform group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
                   <Play className="text-white/0 group-hover:text-white/100 transition-colors h-8 w-8" />
