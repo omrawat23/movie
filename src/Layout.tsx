@@ -21,7 +21,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchResults = (movies: Movie[]) => {
-    setSearchResults(movies);
+    const filteredResults = movies.filter((movie) => {
+      if (movie.media_type === 'tv') {
+        return movie.name.toLowerCase().includes(searchTerm.toLowerCase()) || movie.first_air_date;
+      } else if (movie.media_type === 'movie') {
+        return movie.title.toLowerCase().includes(searchTerm.toLowerCase()) || movie.release_date;
+      }
+      return false;
+    });
+    setSearchResults(filteredResults);
     setIsSearchActive(true);
   };
 
@@ -29,16 +37,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setSearchTerm(value);
   };
 
-  const handleCardClick = (movieId: number) => {
-    window.location.href = `/videopage/${movieId}`;
+  const handleCardClick = (movie: { id: number, media_type: string }) => {
+    if (movie.media_type === 'movie') {
+      window.location.href = `/videopage/${movie.id}`;
+    } else if (movie.media_type === 'tv') {
+      window.location.href = `/tv-videopage/${movie.id}`;
+    }
   };
+  
+  
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const toggleSearch = () => {
-    
     setIsSearchActive(true);
   };
 
@@ -194,7 +207,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <Input
             type="text"
-            placeholder="Search movies..."
+            placeholder="Search ..."
             
             readOnly
             className="w-full bg-gray-700/50 border-gray-600 focus:border-blue-500 text-white placeholder-gray-400 pl-10"
@@ -218,49 +231,52 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         {/* Centered Search Bar and Results */}
         {isSearchActive && (
-          <div 
-            ref={searchResultsRef}
-            className="fixed inset-0 z-50 flex items-start md:items-center justify-center px-4 md:px-0 pt-16 md:pt-0"
-          >
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsSearchActive(false)} />
-            <div className="relative bg-[#1C1E26]/95 backdrop-blur-xl border border-gray-800/50 rounded-xl shadow-lg shadow-black/20 w-full max-w-[500px] mx-auto">
-              <div className="p-4">
-                <SearchBar 
-                  onSearchResults={handleSearchResults} 
-                  onSearchChange={handleSearchChange}
-                  inputRef={searchInputRef}
-                  initialValue={searchTerm}
-                />
-              </div>
-              <ScrollArea className="h-[calc(100vh-40vh)] md:h-[calc(100vh-40vh)]">
-                <div className="p-2 space-y-1">
-                  {searchResults.map((movie) => (
-                    <button
-                      key={movie.id}
-                      className="w-full flex items-center gap-4 p-3 hover:bg-blue-500/10 transition-colors rounded-xl group"
-                      onClick={() => handleCardClick(movie.id)}
-                    >
-                      <img
-                        src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
-                        alt={movie.title}
-                        className="w-12 h-[72px] object-cover rounded-lg shadow-md"
-                      />
-                      <div className="flex flex-col items-start text-left">
-                        <span className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">
-                          {movie.title}
-                        </span>
-                        <span className="text-xs text-gray-400">
-                          {new Date(movie.release_date).getFullYear()}
-                        </span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </ScrollArea>
+        <div 
+          ref={searchResultsRef}
+          className="fixed inset-0 z-50 flex items-start md:items-center justify-center px-4 md:px-0 pt-16 md:pt-0"
+        >
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsSearchActive(false)} />
+          <div className="relative bg-[#1C1E26]/95 backdrop-blur-xl border border-gray-800/50 rounded-xl shadow-lg shadow-black/20 w-full max-w-[500px] mx-auto">
+            <div className="p-4">
+              <SearchBar 
+                onSearchResults={handleSearchResults} 
+                onSearchChange={handleSearchChange}
+                inputRef={searchInputRef}
+                initialValue={searchTerm}
+              />
             </div>
-          </div>
-        )}
+            <ScrollArea className="h-[calc(100vh-40vh)] md:h-[calc(100vh-40vh)]">
+  <div className="p-2 space-y-1">
+    {searchResults.map((movie) => (
+      <button
+        key={movie.id}
+        className="w-full flex items-center gap-4 p-3 hover:bg-blue-500/10 transition-colors rounded-xl group"
+        onClick={() => handleCardClick(movie)}
+      >
+        <img
+          src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
+          alt={movie.media_type}
+          className="w-12 h-[72px] object-cover rounded-lg shadow-md"
+        />
+        <div className="flex flex-col items-start text-left">
+          <span className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">
+            {movie.media_type === 'tv' ? movie.name : movie.title}
+          </span>
+          <span className="text-xs text-gray-400">
+            {movie.media_type === 'tv' ? new Date(movie.first_air_date).getFullYear() : new Date(movie.release_date).getFullYear()}
+          </span>
+          <span className="text-xs text-gray-500 mt-1">
+            {movie.media_type === 'tv' ? 'TV Show' : 'Movie'} {/* Add media type */}
+          </span>
+        </div>
+      </button>
+    ))}
+  </div>
+</ScrollArea>
 
+          </div>
+        </div>
+      )}
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto scrollbar-hide mt-20 md:mt-[-16px]">
           {children}

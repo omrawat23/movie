@@ -1,46 +1,64 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { Play, User2, Image as ImageIcon } from 'lucide-react';
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { Play, User2, Image as ImageIcon } from 'lucide-react'
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface TvShow {
-  id: number;
-  name: string;
-  first_air_date: string;
-  episode_run_time: number[];
-  overview: string;
-  backdrop_path: string;
+  id: number
+  name: string
+  first_air_date: string
+  episode_run_time: number[]
+  overview: string
+  backdrop_path: string
+  seasons: Season[]
+}
+
+interface Season {
+  season_number: number
+  name: string
+  episode_count: number
+}
+
+interface Episode {
+  episode_number: number
+  name: string
 }
 
 interface CastMember {
-  id: number;
-  name: string;
-  character: string;
-  profile_path: string | null;
+  id: number
+  name: string
+  character: string
+  profile_path: string | null
 }
 
 interface SimilarShow {
-  id: number;
-  name: string;
-  poster_path: string | null;
+  id: number
+  name: string
+  poster_path: string | null
 }
 
 interface ImageData {
-  backdrops: { file_path: string }[];
-  posters: { file_path: string }[];
+  backdrops: { file_path: string }[]
+  posters: { file_path: string }[]
 }
 
-const TvVideoPage = () => {
-  const { movieId } = useParams<{ movieId: string }>();
-  const navigate = useNavigate();
-  const [tvShow, setTvShow] = useState<TvShow | null>(null);
-  const [cast, setCast] = useState<CastMember[]>([]);
-  const [similar, setSimilar] = useState<SimilarShow[]>([]);
-  const [images, setImages] = useState<ImageData>({ backdrops: [], posters: [] });
-  const [loading, setLoading] = useState(true);
-  const [error, ] = useState<string | null>(null);
-  const [showVideo, setShowVideo] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+export default function Component() {
+  const { movieId } = useParams<{ movieId: string }>()
+  const navigate = useNavigate()
+  const [tvShow, setTvShow] = useState<TvShow | null>(null)
+  const [cast, setCast] = useState<CastMember[]>([])
+  const [similar, setSimilar] = useState<SimilarShow[]>([])
+  const [images, setImages] = useState<ImageData>({ backdrops: [], posters: [] })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [showVideo, setShowVideo] = useState(false)
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [selectedSeason, setSelectedSeason] = useState<number>(1)
+  const [selectedEpisode, setSelectedEpisode] = useState<number>(1)
+  const [episodes, setEpisodes] = useState<Episode[]>([])
 
   useEffect(() => {
     const fetchTvData = async () => {
@@ -51,45 +69,75 @@ const TvVideoPage = () => {
             accept: 'application/json',
             Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZDg2MjI4NzlhZmUxOGY5OTc2NDJmOWYzNzc3N2FjMiIsIm5iZiI6MTczMDY3MjA3MS4zNjUwMzcsInN1YiI6IjY3MjdmNDA0NTU1ZTNlZmM4OWMzMmY5NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7ST0b4zGR7UynUdSV5ANEKDjpzrxh9nitsPrz8cqx6w'
           }
-        };
+        }
 
         const [tvRes, castRes, similarRes, imagesRes] = await Promise.all([
-          axios.get(`https://api.themoviedb.org/3/tv/${movieId}?language=en-US`, options),
-          axios.get(`https://api.themoviedb.org/3/tv/${movieId}/credits?language=en-US`, options),
-          axios.get(`https://api.themoviedb.org/3/tv/${movieId}/similar?language=en-US`, options),
-          axios.get(`https://api.themoviedb.org/3/tv/${movieId}/images`, options)
-        ]);
+          fetch(`https://api.themoviedb.org/3/tv/${movieId}?language=en-US`, options).then(res => res.json()),
+          fetch(`https://api.themoviedb.org/3/tv/${movieId}/credits?language=en-US`, options).then(res => res.json()),
+          fetch(`https://api.themoviedb.org/3/tv/${movieId}/similar?language=en-US`, options).then(res => res.json()),
+          fetch(`https://api.themoviedb.org/3/tv/${movieId}/images`, options).then(res => res.json())
+        ])
 
-        setTvShow(tvRes.data);
-        setCast(castRes.data.cast.slice(0, 7));
-        setSimilar(similarRes.data.results.slice(0, 6));
+        setTvShow(tvRes)
+        setCast(castRes.cast.slice(0, 7))
+        setSimilar(similarRes.results.slice(0, 6))
         setImages({
-          backdrops: imagesRes.data.backdrops.slice(0, 8),
-          posters: imagesRes.data.posters.slice(0, 4)
-        });
-        setLoading(false);
+          backdrops: imagesRes.backdrops.slice(0, 8),
+          posters: imagesRes.posters.slice(0, 4)
+        })
+        setLoading(false)
       } catch (err) {
-        console.log(err);
-        setLoading(false);
+        console.error(err)
+        setError('Failed to fetch TV show data')
+        setLoading(false)
       }
-    };
+    }
 
-    fetchTvData();
-    // Reset states when movieId changes
-    setShowVideo(false);
-    setSelectedImage(null);
-  }, [movieId]);
+    fetchTvData()
+    setShowVideo(false)
+    setSelectedImage(null)
+  }, [movieId])
+
+  useEffect(() => {
+    const fetchEpisodes = async () => {
+      if (!tvShow) return
+      try {
+        const options = {
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZDg2MjI4NzlhZmUxOGY5OTc2NDJmOWYzNzc3N2FjMiIsIm5iZiI6MTczMDY3MjA3MS4zNjUwMzcsInN1YiI6IjY3MjdmNDA0NTU1ZTNlZmM4OWMzMmY5NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7ST0b4zGR7UynUdSV5ANEKDjpzrxh9nitsPrz8cqx6w'
+          }
+        }
+        const res = await fetch(`https://api.themoviedb.org/3/tv/${movieId}/season/${selectedSeason}?language=en-US`, options)
+        const data = await res.json()
+        setEpisodes(data.episodes)
+      } catch (err) {
+        console.error(err)
+        setError('Failed to fetch episodes')
+      }
+    }
+
+    fetchEpisodes()
+  }, [movieId, selectedSeason, tvShow, showVideo])
 
   const handleSimilarMovieClick = (similarMovieId: number) => {
-    navigate(`/tv-videopage/${similarMovieId}`);
-    window.scrollTo(0, 0);
-  };
+    navigate(`/tv-videopage/${similarMovieId}`)
+    window.scrollTo(0, 0)
+  }
+
+  const handleEpisodeChange = () => {
+    if (showVideo) {
+      setShowVideo(false)
+      setTimeout(() => setShowVideo(true), 100)
+    }
+  }
 
   if (loading) return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-500"></div>
     </div>
-  );
+  )
 
   if (error) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
@@ -97,13 +145,12 @@ const TvVideoPage = () => {
         Error: {error}
       </div>
     </div>
-  );
+  )
 
-  if (!tvShow) return null;
+  if (!tvShow) return null
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Image Modal */}
       {selectedImage && (
         <div
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
@@ -117,7 +164,6 @@ const TvVideoPage = () => {
         </div>
       )}
 
-      {/* Hero Section */}
       <div className="relative h-screen">
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -130,44 +176,69 @@ const TvVideoPage = () => {
           </div>
         </div>
 
-        {/* Content */}
         <div className="relative h-full max-w-7xl mx-auto px-6 py-12 flex flex-col justify-center">
+          <h1 className="text-6xl font-bold text-white mb-4">{tvShow.name}</h1>
+          <div className="flex items-center gap-4 mb-8">
+            <span className="text-pink-500 font-medium">{tvShow.first_air_date.split('-')[0]}</span>
+            <span className="text-gray-400">•</span>
+            <span className="text-gray-400">{tvShow.episode_run_time[0]} min</span>
+            <span className="text-gray-400">•</span>
+            <div className="flex items-center gap-2">
+              <span className="bg-pink-500 text-white px-2 py-0.5 rounded text-sm">HD</span>
+            </div>
+          </div>
+
+          <p className="text-gray-300 max-w-2xl mb-8">{tvShow.overview}</p>
+
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <Select onValueChange={(value) => { setSelectedSeason(Number(value)); handleEpisodeChange(); }}>
+              <SelectTrigger className="w-[180px] bg-black">
+                <SelectValue placeholder="Season 1" />
+              </SelectTrigger>
+              <SelectContent>
+                {tvShow.seasons.map((season) => (
+                  <SelectItem key={season.season_number} value={season.season_number.toString()}>
+                    {season.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select onValueChange={(value) => { setSelectedEpisode(Number(value)); handleEpisodeChange(); }}>
+              <SelectTrigger className="w-[180px] bg-black">
+                <SelectValue placeholder="Episode 1" />
+              </SelectTrigger>
+              <SelectContent>
+                {episodes.map((episode) => (
+                  <SelectItem key={episode.episode_number} value={episode.episode_number.toString()}>
+                    Episode {episode.episode_number}: {episode.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           {showVideo ? (
-            <div className="aspect-video w-full max-w-4xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
+            <div className="aspect-video w-full max-w-7xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
               <iframe
-                src={`https://vidsrc.cc/v2/embed/tv/${movieId}?autoplay=true`}
-                className="aspect-video w-full h-auto rounded-lg relative"
-  width="1280"
-  height="720"
-  title="Video player"
-  frameBorder="0"
-  allowFullScreen
-  sandbox="allow-same-origin allow-scripts allow-presentation"
+                src={`https://vidsrc.cc/v2/embed/tv/${movieId}/${selectedSeason}/${selectedEpisode}/?autoplay=true`}
+                className="aspect-video w-full h-full rounded-lg relative"
+                width="1280"
+                height="720"
+                title="Video player"
+                frameBorder="0"
+                allowFullScreen
+                sandbox="allow-same-origin allow-scripts allow-presentation"
               ></iframe>
             </div>
           ) : (
-            <>
-              <h1 className="text-6xl font-bold text-white mb-4">{tvShow.name}</h1>
-              <div className="flex items-center gap-4 mb-8">
-                <span className="text-pink-500 font-medium">{tvShow.first_air_date.split('-')[0]}</span>
-                <span className="text-gray-400">•</span>
-                <span className="text-gray-400">{tvShow.episode_run_time[0]} min</span>
-                <span className="text-gray-400">•</span>
-                <div className="flex items-center gap-2">
-                  <span className="bg-pink-500 text-white px-2 py-0.5 rounded text-sm">HD</span>
-                </div>
-              </div>
-
-              <p className="text-gray-300 max-w-2xl mb-8">{tvShow.overview}</p>
-
-              <button
-                onClick={() => setShowVideo(true)}
-                className="flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full w-fit transition-colors"
-              >
-                <Play className="h-5 w-5" />
-                <span>Watch Now</span>
-              </button>
-            </>
+            <Button
+              onClick={() => setShowVideo(true)}
+              className="flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full w-fit transition-colors"
+            >
+              <Play className="h-5 w-5" />
+              <span>Watch Now</span>
+            </Button>
           )}
         </div>
       </div>
@@ -245,7 +316,5 @@ const TvVideoPage = () => {
         </div>
       </div>
     </div>
-  );
-};
-
-export default TvVideoPage;
+  )
+}

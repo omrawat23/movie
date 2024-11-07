@@ -24,7 +24,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchResults }) => {
 
     try {
       const response = await axios.get<SearchResponse>(
-        `https://api.themoviedb.org/3/search/movie`,
+        `https://api.themoviedb.org/3/search/multi`,
         {
           params: {
             query,
@@ -62,7 +62,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchResults }) => {
       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
       <Input
         type="text"
-        placeholder="Search movies..."
+        placeholder="Search ..."
         value={searchTerm}
         autoFocus
         onChange={handleSearchChange}

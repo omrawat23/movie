@@ -134,19 +134,17 @@ const VideoPage = () => {
         {/* Content */}
         <div className="relative h-full max-w-7xl mx-auto px-6 py-12 flex flex-col justify-center">
           {showVideo ? (
-            <div onClick={(e) => e.stopPropagation()} className="aspect-video w-full max-w-4xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
+            <div onClick={(e) => e.stopPropagation()} className="aspect-video w-full max-w-7xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
              <iframe
-  src={`https://vidsrc.cc/v2/embed/movie/${movieId}?autoplay=true`} 
-  // src={`https://vidsrc.cc/v2/embed/tv/${movieId}`}
-  className="aspect-video w-full h-auto rounded-lg relative"
-  width="1280"
-  height="720"
-  title="Video player"
-  frameBorder="0"
-  allowFullScreen
-  sandbox="allow-same-origin allow-scripts allow-presentation"
-></iframe>
-
+              src={`https://vidsrc.cc/v2/embed/movie/${movieId}?autoplay=true`} 
+              className="aspect-video w-full h-full rounded-lg relative"
+              width="1280"
+              height="720"
+              title="Video player"
+              frameBorder="0"
+              allowFullScreen
+              sandbox="allow-same-origin allow-scripts allow-presentation"
+            ></iframe>
 
             </div>
           ) : (
