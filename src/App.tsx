@@ -5,10 +5,6 @@ import TvSeries from './pages/TvSeries';
 import Movies from './pages/Movies';
 import VideoPage from './components/VideoPage';
 import TvVideoPage from './components/TvVideoPage';
-// import Movies from "@/pages/Movies";
-// import TvSeries from "@/pages/TvSeries";
-// import Bookmarks from "@/pages/Bookmarks";
-// import MoviesPage from "./components/MoviesPage";
 
 const AppRouter = () => {
   return (
