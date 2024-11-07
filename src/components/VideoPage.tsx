@@ -26,7 +26,7 @@ interface SimilarMovie {
 }
 
 interface ImageData {
-  backdrops: { file_path: string }[];
+  backdrops: { file_path: string }[]; 
   posters: { file_path: string }[];
 }
 
@@ -48,9 +48,10 @@ const VideoPage = () => {
         const options = {
           method: 'GET',
           headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZDg2MjI4NzlhZmUxOGY5OTc2NDJmOWYzNzc3N2FjMiIsIm5iZiI6MTczMDY3MjA3MS4zNjUwMzcsInN1YiI6IjY3MjdmNDA0NTU1ZTNlZmM4OWMzMmY5NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7ST0b4zGR7UynUdSV5ANEKDjpzrxh9nitsPrz8cqx6w'
-          }
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZDg2MjI4NzlhZmUxOGY5OTc2NDJmOWYzNzc3N2FjMiIsIm5iZiI6MTczMDY3MjA3MS4zNjUwMzcsInN1YiI6IjY3MjdmNDA0NTU1ZTNlZmM4OWMzMmY5NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7ST0b4zGR7UynUdSV5ANEKDjpzrxh9nitsPrz8cqx6w",
+      },
         };
 
         const [movieRes, castRes, similarRes, imagesRes] = await Promise.all([
@@ -80,10 +81,9 @@ const VideoPage = () => {
     setSelectedImage(null);
   }, [movieId]);
 
-
   const handleSimilarMovieClick = (similarMovieId: number) => {
     navigate(`/videopage/${similarMovieId}`);
-window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   };
 
   if (loading) return (
@@ -134,18 +134,17 @@ window.scrollTo(0, 0);
         {/* Content */}
         <div className="relative h-full max-w-7xl mx-auto px-6 py-12 flex flex-col justify-center">
           {showVideo ? (
-            <div  onClick={(e) => e.stopPropagation()} className="aspect-video w-full max-w-4xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
-             <iframe
-  src={`https://embed.su/embed/movie/${movieId}`}
-  className="aspect-video w-full h-auto rounded-lg relative"
-  width="1280"
-  height="720"
-  title="Video player"
-  frameBorder="0"
-  allowFullScreen
-  scrolling="no" 
-  sandbox="allow-same-origin allow-scripts"// Limits the iframe's capabilities
-></iframe>
+            <div onClick={(e) => e.stopPropagation()} className="aspect-video w-full max-w-4xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
+              <iframe
+                src={`https://vidbinge.dev/embed/movie/${movieId}`}
+                className="aspect-video w-full h-auto rounded-lg relative"
+                width="1280"
+                height="720"
+                title="Video player"
+                frameBorder="0"
+                allowFullScreen
+                sandbox="allow-same-origin allow-scripts" 
+              ></iframe>
             </div>
           ) : (
             <>
