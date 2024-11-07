@@ -202,7 +202,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Main Content Area */}
       <div className="flex flex-col flex-1 md:ml-64">
         {/* Desktop Header */}
-        <header className="hidden md:flex items-center justify-between backdrop-blur-lg p-4 md:p-0 md:m-4">
+        <header className="hidden md:flex items-center justify-between backdrop-blur-lg p-4 md:p-0 md:m-3 md:ml-5">
         <div className="relative w-64" onClick={toggleSearch}>
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <Input

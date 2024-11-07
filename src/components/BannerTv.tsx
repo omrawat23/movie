@@ -6,7 +6,7 @@ import axios from 'axios'
 
 interface Movie {
   backdrop_path: string
-  title: string
+  name: string
   overview: string
   id: number
 }
@@ -87,14 +87,14 @@ export default function BannerTv() {
 
   return (
     <div 
-      className="relative w-full h-[300px] sm:h-[400px] md:h-[400px] lg:h-[500px] overflow-hidden rounded-2xl sm:rounded-3xl"
+      className="relative w-full h-[300px] sm:h-[400px] md:h-[400px] lg:h-[470px] overflow-hidden rounded-2xl sm:rounded-3xl"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="absolute inset-0 transition-opacity duration-1000 ease-in-out">
         <img
           src={`https://image.tmdb.org/t/p/original${currentMovie.backdrop_path}`}
-          alt={currentMovie.title}
+          alt={currentMovie.name}
           className="absolute inset-0 w-full h-full object-cover"
           onLoad={() => setImageLoaded(true)}
         />
@@ -107,7 +107,7 @@ export default function BannerTv() {
       <div className={`relative h-full flex flex-col justify-end p-4 sm:p-6 md:p-8 lg:p-10 transition-opacity duration-500 ease-in-out ${showContent ? 'opacity-100' : 'opacity-0'}`}>
         <div className="max-w-3xl space-y-2 sm:space-y-4 md:space-y-6">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white tracking-tight leading-none">
-            {currentMovie.title}
+            {currentMovie.name}
           </h1>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 line-clamp-2 sm:line-clamp-3 font-medium leading-relaxed">
             {currentMovie.overview}

@@ -90,7 +90,7 @@ export default function Component() {
 
   return (
     <div 
-      className="relative w-full h-[300px] sm:h-[400px] md:h-[400px] lg:h-[500px] overflow-hidden rounded-2xl sm:rounded-3xl"
+      className="relative w-full h-[300px] sm:h-[400px] md:h-[400px] lg:h-[470px] overflow-hidden rounded-2xl sm:rounded-3xl"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >

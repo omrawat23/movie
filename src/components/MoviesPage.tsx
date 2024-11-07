@@ -93,7 +93,7 @@ export default function MoviesPage() {
                         <img
                           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                           alt={movie.title}
-                          className="w-full h-[250px] sm:h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="w-full h-[220px] sm:h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
                           <h2 className="font-semibold text-lg md:text-xl text-white mb-1 drop-shadow-lg line-clamp-1">
