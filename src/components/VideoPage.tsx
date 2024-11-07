@@ -136,7 +136,8 @@ const VideoPage = () => {
           {showVideo ? (
             <div onClick={(e) => e.stopPropagation()} className="aspect-video w-full max-w-4xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
              <iframe
-  src={`https://vidbinge.dev/embed/movie/${movieId}?autoplay=true`}  // Add autoplay parameter
+  src={`https://vidbinge.dev/embed/movie/${movieId}?autoplay=true`} 
+  // src={`https://vidsrc.cc/v2/embed/tv/${movieId}`}
   className="aspect-video w-full h-auto rounded-lg relative"
   width="1280"
   height="720"

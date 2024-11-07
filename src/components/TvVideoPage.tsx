@@ -135,7 +135,7 @@ const TvVideoPage = () => {
           {showVideo ? (
             <div className="aspect-video w-full max-w-4xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
               <iframe
-                src={`https://vidsrc.cc/v2/embed/tv/${movieId}`}
+                src={`https://vidbinge.dev/embed/tv/${movieId}?autoplay=true`}
                 className="w-full h-full"
                 allowFullScreen
                 title="Tv Video"
