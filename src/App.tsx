@@ -5,7 +5,6 @@ import TvSeries from './pages/TvSeries';
 import Movies from './pages/Movies';
 import VideoPage from './components/VideoPage';
 import TvVideoPage from './components/TvVideoPage';
-import VideoPage1 from './components/View';
 // import Movies from "@/pages/Movies";
 // import TvSeries from "@/pages/TvSeries";
 // import Bookmarks from "@/pages/Bookmarks";
