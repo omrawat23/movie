@@ -49,7 +49,7 @@ export default function BannerTv() {
 
   const handleMovieClick = useCallback(
     (movieId: number) => {
-      navigate(`/videopage/${movieId}`)
+      navigate(`/tv-videopage/${movieId}`)
     },
     [navigate]
   )
