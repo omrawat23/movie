@@ -136,10 +136,13 @@ const TvVideoPage = () => {
             <div className="aspect-video w-full max-w-4xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
               <iframe
                 src={`https://vidbinge.dev/embed/tv/${movieId}?autoplay=true`}
-                className="w-full h-full"
-                allowFullScreen
-                title="Tv Video"
-                referrerPolicy="origin"
+                className="aspect-video w-full h-auto rounded-lg relative"
+  width="1280"
+  height="720"
+  title="Video player"
+  frameBorder="0"
+  allowFullScreen
+  sandbox="allow-same-origin allow-scripts allow-presentation"
               ></iframe>
             </div>
           ) : (
